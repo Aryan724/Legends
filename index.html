@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Planner</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            background-image: url('https://your-custom-background-url.com'); /* Replace with your custom background */
+            background-size: cover;
+        }
+        #app {
+            max-width: 800px;
+            margin: auto;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: fadeIn 1s ease-in;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        #clock {
+            font-size: 24px;
+            font-weight: bold;
+            color: #28a745;
+            margin: 10px 0;
+            text-align: center;
+        }
+        input[type="text"], input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            font-weight: bold;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        #timerSection {
+            margin: 20px 0;
+        }
+        #footer {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .made-by {
+            font-family: 'Great Vibes', cursive;
+            font-size: 24px;
+            color: #ff69b4;
+            animation: fadeIn 2s ease-in-out;
+            text-transform: uppercase;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <div id="app">
+        <h1>Study Planner</h1>
+        <div id="clock"></div>
+        <div id="taskSection">
+            <h2>Add Task</h2>
+            <input type="text" id="taskInput" placeholder="Enter your task">
+            <button id="addTaskBtn">Add Task</button>
+            <button id="voiceInputBtn">🎤 Voice Input</button>
+        </div>
+        <h2>Your Tasks</h2>
+        <ul id="taskList"></ul>
+        <div id="studyGoalSection">
+            <h2>Study Goal Tracker</h2>
+            <input type="number" id="studyGoalInput" placeholder="Set Weekly Study Goal (hours)">
+            <button id="setGoalBtn">Set Goal</button>
+            <p id="goalDisplay"></p>
+        </div>
+        <div id="aiSuggestionSection">
+            <h2>AI Task Suggestions</h2>
+            <button id="suggestTaskBtn">Suggest a Task</button>
+            <p id="aiTaskSuggestion"></p>
+        </div>
+        <div id="motivationalSection">
+            <h2>Motivational Quotes</h2>
+            <div id="quoteDisplay"></div>
+            <button id="newQuoteBtn">Get a New Quote</button>
+        </div>
+        <h2>Motivational Videos</h2>
+        <div id="videoList">
+            <iframe width="320" height="180" src="https://www.youtube.com/embed/uSCHmIQ9mo0" frameborder="0" allowfullscreen></iframe>
+            <iframe width="320" height="180" src="https://www.youtube.com/embed/dvc81UK4iq8" frameborder="0" allowfullscreen></iframe>
+            <iframe width="320" height="180" src="https://www.youtube.com/embed/Lk5flv3I1fI" frameborder="0" allowfullscreen></iframe>
+            <iframe width="320" height="180" src="https://www.youtube.com/embed/O_Xys_t2AeM" frameborder="0" allowfullscreen></iframe>
+        </div>
+        <div id="studyTechniques">
+            <h2>Study Techniques</h2>
+            <ul>
+                <li><strong>Pomodoro Technique:</strong> Study for 25 minutes, then take a 5-minute break.</li>
+                <li><strong>Feynman Technique:</strong> Teach what you’ve learned to someone else.</li>
+            </ul>
+            <button id="startPomodoro">Start Pomodoro Timer</button>
+        </div>
+        <div id="progressBadges">
+            <h2>Your Badges</h2>
+            <div id="badgeList"></div>
+        </div>
+        <div id="habitTracker">
+            <h2>Habit Tracker</h2>
+            <input type="text" id="habitInput" placeholder="Track a habit">
+            <button id="trackHabitBtn">Track Habit</button>
+        </div>
+        <div id="musicSection">
+            <h2>Study Music</h2>
+            <iframe src="https://open.spotify.com/embed/playlist/38mWQAGEylOPPcWfDpB6FO?si=Xr_TKAXmSGO7HVbt8rOYyg" width="100%" height="380" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>
+        </div>
+        <div id="timerSection">
+            <h2>Study Timer</h2>
+            <input type="number" id="studyMinutesInput" placeholder="Set Study Time (minutes)">
+            <button id="startTimerBtn">Start Timer</button>
+        </div>
+        <div id="focusMode">
+            <h2>Focus Mode</h2>
+            <button id="focusModeBtn">Activate Focus Mode</button>
+        </div>
+        <div id="footer">
+            <p class="made-by">Made By Aryan</p>
+        </div>
+    </div>
+
+    <script>
+        const quotes = [
+            "The future belongs to those who believe in the beauty of their dreams. - Eleanor Roosevelt",
+            "It does not matter how slowly you go as long as you do not stop. - Confucius",
+            "Success is not the key to happiness. Happiness is the key to success. If you love what you are doing, you will be successful. - Albert Schweitzer",
+            "The only way to do great work is to love what you do. - Steve Jobs",
+            "Believe you can and you're halfway there. - Theodore Roosevelt"
+        ];
+        const tasks = [];
+        const badges = [];
+        let weeklyGoal = 0;
+
+        document.getElementById('addTaskBtn').addEventListener('click', addTask);
+        document.getElementById('setGoalBtn').addEventListener('click', setWeeklyGoal);
+        document.getElementById('suggestTaskBtn').addEventListener('click', suggestTask);
+        document.getElementById('newQuoteBtn').addEventListener('click', getNewQuote);
+        document.getElementById('trackHabitBtn').addEventListener('click', trackHabit);
+        document.getElementById('startPomodoro').addEventListener('click', startPomodoro);
+        document.getElementById('focusModeBtn').addEventListener('click', activateFocusMode);
+        document.getElementById('startTimerBtn').addEventListener('click', startStudyTimer);
+
+        function updateClock() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const seconds = now.getSeconds().toString().padStart(2, '0');
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        function addTask() {
+            const taskInput = document.getElementById('taskInput');
+            const task = taskInput.value;
+            if (task) {
+                tasks.push(task);
+                taskInput.value = '';
+                updateTaskList();
+                awardBadge('taskAdded');
+            }
+        }
+
+        function updateTaskList() {
+            const taskList = document.getElementById('taskList');
+            taskList.innerHTML = '';
+            tasks.forEach((task) => {
+                const li = document.createElement('li');
+                li.textContent = task;
+                taskList.appendChild(li);
+            });
+        }
+
+        function setWeeklyGoal() {
+            const goalInput = document.getElementById('studyGoalInput');
+            weeklyGoal = parseInt(goalInput.value);
+            document.getElementById('goalDisplay').textContent = `Your weekly goal is set to ${weeklyGoal} hours.`;
+        }
+
+        function suggestTask() {
+            const suggestions = ["Read a chapter from your science book.", "Practice 10 math problems.", "Revise history notes."];
+            const randomIndex = Math.floor(Math.random() * suggestions.length);
+            document.getElementById('aiTaskSuggestion').textContent = suggestions[randomIndex];
+        }
+
+        function getNewQuote() {
+            const randomIndex = Math.floor(Math.random() * quotes.length);
+            document.getElementById('quoteDisplay').textContent = quotes[randomIndex];
+        }
+
+        function trackHabit() {
+            const habitInput = document.getElementById('habitInput');
+            const habit = habitInput.value;
+            if (habit) {
+                badges.push(`Tracked habit: ${habit}`);
+                updateBadgeList();
+                habitInput.value = '';
+            }
+        }
+
+        function updateBadgeList() {
+            const badgeList = document.getElementById('badgeList');
+            badgeList.innerHTML = '';
+            badges.forEach((badge) => {
+                const div = document.createElement('div');
+                div.textContent = badge;
+                badgeList.appendChild(div);
+            });
+        }
+
+        function awardBadge(type) {
+            if (type === 'taskAdded') {
+                badges.push('🎖️ Task Master');
+                updateBadgeList();
+            }
+        }
+
+        function startPomodoro() {
+            let minutes = 25;
+            let seconds = 0;
+            const timerInterval = setInterval(() => {
+                if (seconds === 0 && minutes === 0) {
+                    clearInterval(timerInterval);
+                    alert('Pomodoro session completed! Take a 5-minute break.');
+                } else if (seconds === 0) {
+                    minutes--;
+                    seconds = 59;
+                } else {
+                    seconds--;
+                }
+                document.getElementById('clock').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+            }, 1000);
+        }
+
+        function activateFocusMode() {
+            document.body.style.backgroundColor = '#333';
+            document.getElementById('app').style.filter = 'brightness(0.5)';
+            alert('Focus mode activated. Stay focused!');
+        }
+
+        function startStudyTimer() {
+            const studyMinutes = parseInt(document.getElementById('studyMinutesInput').value);
+            let secondsRemaining = studyMinutes * 60;
+            const timerInterval = setInterval(() => {
+                const minutes = Math.floor(secondsRemaining / 60);
+                const seconds = secondsRemaining % 60;
+                document.getElementById('clock').textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                if (secondsRemaining <= 0) {
+                    clearInterval(timerInterval);
+                    alert('Time is up! Great job studying.');
+                } else {
+                    secondsRemaining--;
+                }
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
